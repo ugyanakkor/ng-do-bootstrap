@@ -1,18 +1,32 @@
-import { NgModule } from '@angular/core';
+import {ApplicationRef, DoBootstrap, NgModule} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
+import { NoobComponent } from './noob/noob.component';
+import { ProComponent } from './pro/pro.component';
+import {map, of} from "rxjs";
 
 @NgModule({
   declarations: [
-    AppComponent
+    NoobComponent,
+    ProComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
   ],
-  providers: [],
-  bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule implements DoBootstrap{
+
+  ngDoBootstrap(appRef: ApplicationRef) {
+    console.log('called')
+
+/*    const APP = window.innerWidth > 300 ? ProComponent : NoobComponent;
+    return appRef.bootstrap(APP, document.getElementById('app'));*/
+
+    of(true).pipe(
+      map((data) => {
+        const APP = data ? ProComponent : NoobComponent;
+        return appRef.bootstrap(APP, document.getElementById('app'));
+      })
+    ).subscribe();
+  }
+}
