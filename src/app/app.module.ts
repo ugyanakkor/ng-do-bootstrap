@@ -1,9 +1,9 @@
-import {ApplicationRef, DoBootstrap, NgModule} from '@angular/core';
+import {APP_INITIALIZER, ApplicationRef, DoBootstrap, NgModule} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { NoobComponent } from './noob/noob.component';
 import { ProComponent } from './pro/pro.component';
-import {map, of} from "rxjs";
+import {interval, map, of} from "rxjs";
 
 @NgModule({
   declarations: [
@@ -13,6 +13,18 @@ import {map, of} from "rxjs";
   imports: [
     BrowserModule,
   ],
+  providers: [
+    {
+      provide: APP_INITIALIZER,
+      multi: true,
+      useValue: () => {
+        console.log('alma')
+         return interval(1000); //will block the app, because app init is waiting something for completion
+        // it could be a promise resolved or observable completed
+        //.pipe(take(1)) will make it finite observable and complete is
+      }
+    }
+  ]
 })
 export class AppModule implements DoBootstrap{
 
